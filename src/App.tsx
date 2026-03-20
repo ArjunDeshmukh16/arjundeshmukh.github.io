@@ -598,75 +598,44 @@ function Skills() {
   );
 }
 
+const pinnedRepos = [
+  { name: "CVaR-Based Left-Tail Factor Strategy", url: "https://github.com/ArjunDeshmukh16/CVaR-Based-Left-Tail-Factor-Strategy" },
+  { name: "Buy/Sell Signal Generation Engine", url: "https://github.com/ArjunDeshmukh16/Generating-Buy-Sell-Trading-Signals-from-Structured-Market-Data" },
+  { name: "SARA: Autonomous AI Model", url: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers" },
+  { name: "Bézier Flow", url: "https://github.com/ArjunDeshmukh16/B-zier-flow" },
+];
+
 function GitHubStats() {
   return (
     <div id="github" style={{ padding: "0 2rem 80px", maxWidth: 900, margin: "0 auto" }}>
       <FadeIn>
-        <h2 style={{
-          fontSize: "3rem", fontWeight: 800, marginBottom: "0.5rem", letterSpacing: "-1px",
-          background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
-          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
-        }}>GitHub Activity</h2>
-        <div style={{ width: 48, height: 3, background: "linear-gradient(90deg, #FF9933, #138808)", borderRadius: 2, marginBottom: "2.5rem" }} />
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "3rem", marginBottom: "2rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+            <span style={{ color: "#64748b", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "1px", fontWeight: 600 }}>GitHub</span>
+            <a href="https://github.com/ArjunDeshmukh16" target="_blank" rel="noreferrer"
+              style={{ color: "#64748b", fontSize: "0.82rem", textDecoration: "none", transition: "color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#94a3b8")}
+              onMouseLeave={e => (e.currentTarget.style.color = "#64748b")}
+            >github.com/ArjunDeshmukh16 ↗</a>
+          </div>
+        </div>
       </FadeIn>
 
       <FadeIn delay={0.05}>
-        <div style={{ marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
-          <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Live stats from GitHub API</span>
-          <a href="https://github.com/ArjunDeshmukh16" target="_blank" rel="noreferrer" style={{
-            display: "inline-flex", alignItems: "center", gap: "0.4rem",
-            padding: "0.4rem 0.9rem", background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 6,
-            color: "#e2e8f0", textDecoration: "none", fontSize: "0.85rem", fontWeight: 600, transition: "all 0.2s"
-          }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.12)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)"; }}
-          >View Profile on GitHub ↗</a>
-        </div>
-      </FadeIn>
-
-      <FadeIn delay={0.1}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem", marginBottom: "1rem" }}>
-          <img
-            src="https://github-readme-stats.vercel.app/api?username=ArjunDeshmukh16&show_icons=true&theme=github_dark&hide_border=true&bg_color=0d0d0d&title_color=FF9933&icon_color=138808&text_color=e2e8f0&rank_icon=github"
-            alt="GitHub Stats"
-            style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.06)" }}
-          />
-          <img
-            src="https://github-readme-stats.vercel.app/api/top-langs/?username=ArjunDeshmukh16&layout=compact&theme=github_dark&hide_border=true&bg_color=0d0d0d&title_color=FF9933&text_color=e2e8f0&langs_count=8"
-            alt="Top Languages"
-            style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.06)" }}
-          />
-        </div>
-      </FadeIn>
-
-      <FadeIn delay={0.15}>
-        <img
-          src="https://streak-stats.demolab.com?user=ArjunDeshmukh16&theme=github-dark-blue&hide_border=true&background=0d0d0d&ring=FF9933&fire=FF9933&currStreakLabel=FF9933&dates=94a3b8"
-          alt="GitHub Streak"
-          style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.06)", marginBottom: "1rem" }}
-        />
-      </FadeIn>
-
-      <FadeIn delay={0.2}>
-        <div style={{
-          padding: "1.25rem 1.5rem", background: "rgba(255,153,51,0.05)",
-          border: "1px solid rgba(255,153,51,0.15)", borderRadius: 8,
-          display: "flex", alignItems: "flex-start", gap: "1rem"
-        }}>
-          <span style={{ fontSize: "1.3rem", flexShrink: 0 }}>📌</span>
-          <div>
-            <div style={{ color: "#FF9933", fontWeight: 700, fontSize: "0.85rem", marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.4px" }}>Pinned Repositories</div>
-            <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.6 }}>
-              Visit my{" "}
-              <a href="https://github.com/ArjunDeshmukh16" target="_blank" rel="noreferrer"
-                style={{ color: "#FF9933", textDecoration: "none" }}
-                onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
-                onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
-              >GitHub profile ↗</a>{" "}
-              to see featured pinned repositories including the CVaR Factor Strategy, Signal Generation Engine, SARA AI, and more — all with detailed READMEs.
-            </div>
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          {pinnedRepos.map((repo, i) => (
+            <a key={i} href={repo.url} target="_blank" rel="noreferrer" style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "0.75rem 0", borderBottom: "1px solid rgba(255,255,255,0.05)",
+              textDecoration: "none", transition: "all 0.2s", gap: "1rem"
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.paddingLeft = "0.5rem"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.paddingLeft = "0"; }}
+            >
+              <span style={{ color: "#cbd5e1", fontSize: "0.92rem" }}>{repo.name}</span>
+              <span style={{ color: "#334155", fontSize: "0.8rem", whiteSpace: "nowrap" }}>↗</span>
+            </a>
+          ))}
         </div>
       </FadeIn>
     </div>
