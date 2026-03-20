@@ -804,7 +804,7 @@ function Contact() {
       <FadeIn delay={0.15}>
         <p style={{ marginTop: "3rem", color: "#64748b", fontSize: "0.95rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
           {[
-            { label: "Gmail", href: "https://mail.google.com/mail/?view=cm&fs=1&to=arjun.deshmukh1609@gmail.com" },
+            { label: "Gmail", href: "mailto:arjun.deshmukh1609@gmail.com" },
             { label: "LinkedIn", href: "https://linkedin.com/in/arjun-deshmukh1609" },
             { label: "GitHub", href: "https://github.com/ArjunDeshmukh16" },
             { label: "Instagram", href: "https://instagram.com/160991_arjun" },
@@ -898,7 +898,7 @@ function Footer() {
       zIndex: 50, letterSpacing: "0.5px", flexWrap: "wrap"
     }}>
       {[
-        { label: "email", href: "https://mail.google.com/mail/?view=cm&fs=1&to=arjun.deshmukh1609@gmail.com" },
+        { label: "email", href: "mailto:arjun.deshmukh1609@gmail.com" },
         { label: "instagram", href: "https://instagram.com/160991_arjun" },
         { label: "github", href: "https://github.com/ArjunDeshmukh16" },
         { label: "linkedin", href: "https://linkedin.com/in/arjun-deshmukh1609" },
