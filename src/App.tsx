@@ -185,12 +185,12 @@ function Hero({ onNav }: { onNav: (id: string) => void }) {
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#ffffff"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}
           >Let's Talk</button>
-          <a href="https://docs.google.com/document/d/1T0BxkCFIXMT6j-x_vLjNW_4ADol_9hCf6WjeWpuij1s/export?format=pdf"
-            download="Arjun_Deshmukh_CV.pdf"
+          <a href="https://docs.google.com/document/d/1T0BxkCFIXMT6j-x_vLjNW_4ADol_9hCf6WjeWpuij1s/preview"
+            target="_blank" rel="noreferrer"
             style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#334155"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
-          >Download CV</a>
+          >View CV</a>
           <a href="https://linkedin.com/in/arjun-deshmukh1609" target="_blank" rel="noreferrer"
             style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.color = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
@@ -701,12 +701,12 @@ function Contact() {
     <Section id="contact" title="Let's Connect">
       <FadeIn delay={0.05}>
         <div style={{ display: "flex", gap: "1rem", marginBottom: "3rem", flexWrap: "wrap" }}>
-          <a href="https://docs.google.com/document/d/1T0BxkCFIXMT6j-x_vLjNW_4ADol_9hCf6WjeWpuij1s/export?format=pdf"
-            download="Arjun_Deshmukh_CV.pdf"
+          <a href="https://docs.google.com/document/d/1T0BxkCFIXMT6j-x_vLjNW_4ADol_9hCf6WjeWpuij1s/preview"
+            target="_blank" rel="noreferrer"
             style={{ ...btnBase, background: "#ffffff", color: "#000000" }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#ffffff"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
-          >Download CV</a>
+          >View CV</a>
           <a href="https://linkedin.com/in/arjun-deshmukh1609" target="_blank" rel="noreferrer"
             style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.color = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
