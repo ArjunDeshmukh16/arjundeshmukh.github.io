@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 function hexToRgb(hex: string): [number, number, number] {
   const h = hex.replace("#", "");
@@ -19,6 +20,22 @@ function GradientText({ text, from, to }: { text: string; from: string; to: stri
         return <span key={i} style={{ color: lerpColor(from, to, t) }}>{char}</span>;
       })}
     </>
+  );
+}
+
+function FadeIn({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -46,6 +63,7 @@ const commands = [
   { id: "work", label: "Work", category: "Navigate" },
   { id: "projects", label: "Projects", category: "Navigate" },
   { id: "skills", label: "Skills", category: "Navigate" },
+  { id: "github", label: "GitHub Stats", category: "Navigate" },
   { id: "contact", label: "Contact", category: "Navigate" },
   { id: "credits", label: "Credits", category: "Navigate" },
 ];
@@ -116,35 +134,52 @@ function Hero({ onNav }: { onNav: (id: string) => void }) {
   return (
     <main style={{ paddingTop: 100, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ maxWidth: 850, padding: "0 2rem", marginTop: "-40px" }}>
-        <h1 style={{
-          fontSize: "5rem", fontWeight: 800, lineHeight: 1.1, marginBottom: "1.5rem", letterSpacing: "-2px",
-          background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 33%, #138808 100%)",
-          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
-        }}>Arjun Deshmukh</h1>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h1 style={{
+            fontSize: "5rem", fontWeight: 800, lineHeight: 1.1, marginBottom: "1.5rem", letterSpacing: "-2px",
+            background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 33%, #138808 100%)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
+          }}>Arjun Deshmukh</h1>
+        </motion.div>
 
-        <div style={{ fontSize: "1.3rem", color: "#94a3b8", marginBottom: "0.8rem", height: 50, display: "flex", alignItems: "center", fontWeight: 600 }}>
-          <span style={{ opacity: roleFade ? 1 : 0, transition: "opacity 0.5s ease" }}>
-            {roles[roleIdx].text}
-            <GradientText
-              text={roles[roleIdx].highlight}
-              from={roles[roleIdx].from}
-              to={roles[roleIdx].to}
-            />
-          </span>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div style={{ fontSize: "1.3rem", color: "#94a3b8", marginBottom: "0.8rem", height: 50, display: "flex", alignItems: "center", fontWeight: 600 }}>
+            <span style={{ opacity: roleFade ? 1 : 0, transition: "opacity 0.5s ease" }}>
+              {roles[roleIdx].text}
+              <GradientText
+                text={roles[roleIdx].highlight}
+                from={roles[roleIdx].from}
+                to={roles[roleIdx].to}
+              />
+            </span>
+          </div>
 
-        <div style={{ fontSize: "1.1rem", marginBottom: "2rem", height: 36, display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span style={{ color: "#64748b" }}>Obsessed with</span>
-          <span style={{
-            color: taglines[taglineIdx].color,
-            fontWeight: 700,
-            textShadow: `0 0 20px ${taglines[taglineIdx].glow}, 0 0 40px ${taglines[taglineIdx].glow}`,
-            opacity: taglineFade ? 1 : 0,
-            transition: "opacity 0.5s ease",
-          }}>{taglines[taglineIdx].word}</span>
-        </div>
+          <div style={{ fontSize: "1.1rem", marginBottom: "2rem", height: 36, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span style={{ color: "#64748b" }}>Obsessed with</span>
+            <span style={{
+              color: taglines[taglineIdx].color,
+              fontWeight: 700,
+              textShadow: `0 0 20px ${taglines[taglineIdx].glow}, 0 0 40px ${taglines[taglineIdx].glow}`,
+              opacity: taglineFade ? 1 : 0,
+              transition: "opacity 0.5s ease",
+            }}>{taglines[taglineIdx].word}</span>
+          </div>
+        </motion.div>
 
-        <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: "flex", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}
+        >
           <button onClick={() => onNav("contact")}
             style={{ ...btnBase, background: "#ffffff", color: "#000000" }}
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"; }}
@@ -158,17 +193,27 @@ function Hero({ onNav }: { onNav: (id: string) => void }) {
           >Download CV</a>
           <a href="https://linkedin.com/in/arjun-deshmukh1609" target="_blank" rel="noreferrer"
             style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.color = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#334155"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
           >LinkedIn</a>
-        </div>
+          <a href="https://github.com/ArjunDeshmukh16" target="_blank" rel="noreferrer"
+            style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#6e7681"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#334155"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
+          >GitHub</a>
+        </motion.div>
 
-        <p style={{ fontSize: "0.875rem", color: "#64748b", letterSpacing: "0.3px" }}>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          style={{ fontSize: "0.875rem", color: "#64748b", letterSpacing: "0.3px" }}
+        >
           Press{" "}
           <kbd style={{ background: "#1a1a2e", border: "1px solid #334155", borderRadius: 4, padding: "0.3rem 0.6rem", fontFamily: "Monaco, monospace", fontSize: "0.8rem" }}>⌘</kbd>
           {" "}<kbd style={{ background: "#1a1a2e", border: "1px solid #334155", borderRadius: 4, padding: "0.3rem 0.6rem", fontFamily: "Monaco, monospace", fontSize: "0.8rem" }}>K</kbd>{" "}
           to navigate →
-        </p>
+        </motion.p>
       </div>
     </main>
   );
@@ -177,39 +222,55 @@ function Hero({ onNav }: { onNav: (id: string) => void }) {
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <div id={id} style={{ padding: "100px 2rem 80px", maxWidth: 900, margin: "0 auto" }}>
-      <h2 style={{
-        fontSize: "3rem", fontWeight: 800, marginBottom: "2.5rem", letterSpacing: "-1px",
-        background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
-        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
-      }}>{title}</h2>
+      <FadeIn>
+        <h2 style={{
+          fontSize: "3rem", fontWeight: 800, marginBottom: "0.5rem", letterSpacing: "-1px",
+          background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
+          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
+        }}>{title}</h2>
+        <div style={{ width: 48, height: 3, background: "linear-gradient(90deg, #FF9933, #138808)", borderRadius: 2, marginBottom: "2.5rem" }} />
+      </FadeIn>
       <div style={{ fontSize: "1rem", lineHeight: 1.85, color: "#cbd5e1" }}>{children}</div>
     </div>
   );
 }
 
 function About({ onNav }: { onNav: (id: string) => void }) {
+  void onNav;
   return (
     <Section id="about" title="About">
-      <p style={{ marginBottom: "1.5rem" }}>Growing up in a family of financial strategists, I developed an early obsession with capital markets. Conversations around credit cycles, equity valuations, capital allocation, and risk pricing shaped my approach to investing: rigorous, data-driven, and always questioning.</p>
-      <p style={{ marginBottom: "1.5rem" }}>Financial Engineering Graduate from the University of Southern California. Previously completed Computer Science from NMIMS University. This combination gives me a unique edge: deep technical foundations paired with rigorous financial theory. I bridge the gap between algorithmic thinking and real-world market dynamics.</p>
-      <p style={{ marginBottom: "1.5rem" }}>Interned in India's most competitive investment firms: UTI Alternatives, HDFC Securities, Yes Bank, and Aditya Birla Capital. I've screened investment opportunities, built performance dashboards, constructed backtesting frameworks, executed transactions, and analyzed 50+ companies. Every internship taught me something different about how capital flows and value gets created.</p>
-      <p style={{ marginBottom: "1.5rem" }}>The intersection of strategy and execution excites me most. Identifying inefficiencies in markets, structuring solutions, and guiding capital toward lasting value creation. My recent research at USC: tail-risk factor models and real-time signal generation: combines statistical rigor with practical implementation. I don't just build models; I build systems that work in the real world.</p>
+      <FadeIn delay={0.05}>
+        <p style={{ marginBottom: "1.5rem" }}>Growing up in a family of financial strategists, I developed an early obsession with capital markets. Conversations around credit cycles, equity valuations, capital allocation, and risk pricing shaped my approach to investing: rigorous, data-driven, and always questioning.</p>
+      </FadeIn>
+      <FadeIn delay={0.1}>
+        <p style={{ marginBottom: "1.5rem" }}>Financial Engineering Graduate from the University of Southern California. Previously completed Computer Science from NMIMS University. This combination gives me a unique edge: deep technical foundations paired with rigorous financial theory. I bridge the gap between algorithmic thinking and real-world market dynamics.</p>
+      </FadeIn>
+      <FadeIn delay={0.15}>
+        <p style={{ marginBottom: "1.5rem" }}>Interned in India's most competitive investment firms: UTI Alternatives, HDFC Securities, Yes Bank, and Aditya Birla Capital. I've screened investment opportunities, built performance dashboards, constructed backtesting frameworks, executed transactions, and analyzed 50+ companies. Every internship taught me something different about how capital flows and value gets created.</p>
+      </FadeIn>
+      <FadeIn delay={0.2}>
+        <p style={{ marginBottom: "1.5rem" }}>The intersection of strategy and execution excites me most. Identifying inefficiencies in markets, structuring solutions, and guiding capital toward lasting value creation. My recent research at USC — tail-risk factor models and real-time signal generation — combines statistical rigor with practical implementation. I don't just build models; I build systems that work in the real world.</p>
+      </FadeIn>
 
-      <div style={{
-        background: "rgba(255,255,255,0.04)", borderLeft: "4px solid #FF9933",
-        padding: "1.5rem", margin: "2rem 0", borderRadius: 4
-      }}>
-        <p style={{ color: "#e2e8f0", marginBottom: 0 }}>
-          <strong style={{ color: "#FF9933" }}>Why Hire Me:</strong> I bring a{" "}
-          <strong style={{ color: "#e2e8f0" }}>global perspective rare among Finance Engineering graduates</strong>.
-          My dual exposure to Indian private markets (UTI, HDFC, ABC) and US quantitative research (USC) enables me to
-          identify inefficiencies and build strategies that bridge emerging and developed markets. I'm ambitious about
-          building investment teams in Asia that leverage both regions' strengths. I don't just analyze markets; I
-          identify where capital flows inefficiently and structure solutions.
-        </p>
-      </div>
+      <FadeIn delay={0.25}>
+        <div style={{
+          background: "rgba(255,255,255,0.04)", borderLeft: "4px solid #FF9933",
+          padding: "1.5rem", margin: "2rem 0", borderRadius: 4
+        }}>
+          <p style={{ color: "#e2e8f0", marginBottom: 0 }}>
+            <strong style={{ color: "#FF9933" }}>Why Hire Me:</strong> I bring a{" "}
+            <strong style={{ color: "#e2e8f0" }}>global perspective rare among Finance Engineering graduates</strong>.
+            My dual exposure to Indian private markets (UTI, HDFC, ABC) and US quantitative research (USC) enables me to
+            identify inefficiencies and build strategies that bridge emerging and developed markets. I'm ambitious about
+            building investment teams in Asia that leverage both regions' strengths. I don't just analyze markets; I
+            identify where capital flows inefficiently and structure solutions.
+          </p>
+        </div>
+      </FadeIn>
 
-      <p style={{ marginBottom: "1.5rem" }}>Currently seeking full-time opportunities in investment analysis, quantitative research, portfolio management, and systematic trading. Authorized to work in the United States (OPT eligible, available May 2026). I'm looking for teams that value intellectual rigor, data-driven decision-making, and a relentless pursuit of alpha.</p>
+      <FadeIn delay={0.3}>
+        <p style={{ marginBottom: "1.5rem" }}>Currently seeking full-time opportunities in investment analysis, quantitative research, portfolio management, and systematic trading. Authorized to work in the United States (OPT eligible, available May 2026). I'm looking for teams that value intellectual rigor, data-driven decision-making, and a relentless pursuit of alpha.</p>
+      </FadeIn>
     </Section>
   );
 }
@@ -234,49 +295,56 @@ const lors = [
 function Recommendations() {
   return (
     <div style={{ padding: "0 2rem 80px", maxWidth: 900, margin: "0 auto" }}>
-      <h2 style={{
-        fontSize: "3rem", fontWeight: 800, marginBottom: "2.5rem", letterSpacing: "-1px",
-        background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
-        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
-      }}>Recommendations</h2>
+      <FadeIn>
+        <h2 style={{
+          fontSize: "3rem", fontWeight: 800, marginBottom: "0.5rem", letterSpacing: "-1px",
+          background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
+          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
+        }}>Recommendations</h2>
+        <div style={{ width: 48, height: 3, background: "linear-gradient(90deg, #FF9933, #138808)", borderRadius: 2, marginBottom: "2.5rem" }} />
+      </FadeIn>
       {recommendations.map((r, i) => (
-        <div key={i} style={{
-          background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
-          padding: "1.5rem", marginBottom: "1.5rem", borderRadius: 8
-        }}>
-          <a
-            href="https://www.linkedin.com/in/arjun-deshmukh1609/details/recommendations/"
-            target="_blank" rel="noreferrer"
-            style={{ display: "block", color: "#94a3b8", fontWeight: 600, fontSize: "0.95rem", marginBottom: "0.5rem", textDecoration: "none" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; }}
-          >{r.author} ↗</a>
-          <div style={{ color: "#cbd5e1", lineHeight: 1.7, fontStyle: "italic" }}>{r.text}</div>
-        </div>
+        <FadeIn key={i} delay={i * 0.1}>
+          <div style={{
+            background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+            padding: "1.5rem", marginBottom: "1.5rem", borderRadius: 8
+          }}>
+            <a
+              href="https://www.linkedin.com/in/arjun-deshmukh1609/details/recommendations/"
+              target="_blank" rel="noreferrer"
+              style={{ display: "block", color: "#94a3b8", fontWeight: 600, fontSize: "0.95rem", marginBottom: "0.5rem", textDecoration: "none" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; }}
+            >{r.author} ↗</a>
+            <div style={{ color: "#cbd5e1", lineHeight: 1.7, fontStyle: "italic" }}>{r.text}</div>
+          </div>
+        </FadeIn>
       ))}
 
-      <div style={{ marginTop: "3rem" }}>
-        <div style={{ fontWeight: 700, color: "#FF9933", marginBottom: "1.2rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.5px" }}>Letters of Recommendation</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          {lors.map((l, i) => (
-            <a key={i} href={l.url} target="_blank" rel="noreferrer" style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              padding: "1rem 1.25rem", background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8,
-              textDecoration: "none", transition: "all 0.2s"
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.07)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.15)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.08)"; }}
-            >
-              <div>
-                <div style={{ color: "#e2e8f0", fontWeight: 600, fontSize: "0.95rem", marginBottom: "0.2rem" }}>{l.name}</div>
-                <div style={{ color: "#64748b", fontSize: "0.82rem" }}>{l.role}</div>
-              </div>
-              <span style={{ color: "#94a3b8", fontSize: "0.85rem", whiteSpace: "nowrap", marginLeft: "1rem" }}>View LOR ↗</span>
-            </a>
-          ))}
+      <FadeIn delay={0.2}>
+        <div style={{ marginTop: "3rem" }}>
+          <div style={{ fontWeight: 700, color: "#FF9933", marginBottom: "1.2rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.5px" }}>Letters of Recommendation</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {lors.map((l, i) => (
+              <a key={i} href={l.url} target="_blank" rel="noreferrer" style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "1rem 1.25rem", background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8,
+                textDecoration: "none", transition: "all 0.2s"
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.07)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.15)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.03)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.08)"; }}
+              >
+                <div>
+                  <div style={{ color: "#e2e8f0", fontWeight: 600, fontSize: "0.95rem", marginBottom: "0.2rem" }}>{l.name}</div>
+                  <div style={{ color: "#64748b", fontSize: "0.82rem" }}>{l.role}</div>
+                </div>
+                <span style={{ color: "#94a3b8", fontSize: "0.85rem", whiteSpace: "nowrap", marginLeft: "1rem" }}>View LOR ↗</span>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
+      </FadeIn>
     </div>
   );
 }
@@ -287,58 +355,77 @@ const jobs = [
     company: "UTI Alternatives", companyColor: "#0052CC", companyUrl: "https://www.utialternatives.com/home", location: "New Delhi",
     period: "Jul 2025 - Sep 2025",
     desc: "Screened and evaluated 16+ private credit and equity deals (~$15M) with 40% conversion to term sheet. Executed transactions: $150K structured equity, $225K real estate financings, $127.5K education sector restructuring. Developed investor dashboards (IRR, MOIC, NAV, carried interest).",
-    certUrl: "/docs/cert-uti.pdf"
+    certUrl: "/docs/cert-uti.pdf",
+    tags: ["Private Credit", "Structured Equity", "Deal Screening", "IRR / MOIC", "Investor Dashboards"]
   },
   {
     title: "Quantitative Trading Analyst",
     company: "HDFC Securities", companyColor: "#003D7A", companyUrl: "https://www.hdfcsec.com/", location: "Mumbai",
     period: "May 2025 - Jul 2025",
     desc: "Benchmarked collateral margin haircuts on 25 high-volume equities. Built robust backtests using technical analysis (RSI, MACD, Bollinger Bands) to refine signals for better risk-adjusted returns.",
-    certUrl: "/docs/cert-hdfc.pdf"
+    certUrl: "/docs/cert-hdfc.pdf",
+    tags: ["Backtesting", "RSI / MACD", "Bollinger Bands", "Risk-Adjusted Returns", "Python"]
   },
   {
     title: "Software Development & Data Mining Analyst",
     company: "Yes Bank", companyColor: "#1E40AF", companyUrl: "https://www.yes.bank.in/", location: "Mumbai",
     period: "May 2023 - Jul 2023",
     desc: "Automated incentive calculation systems using Python and Hadoop. Enhanced sales team productivity by 16% by reducing reporting turnaround time to T+1 day.",
-    certUrl: "/docs/cert-yesbank.pdf"
+    certUrl: "/docs/cert-yesbank.pdf",
+    tags: ["Python", "Hadoop", "Data Automation", "Pipeline Engineering"]
   },
   {
     title: "Fundamental Research Analyst",
     company: "Aditya Birla Capital", companyColor: "#C8102E", companyUrl: "https://www.adityabirlacapital.com/abcd/share-market", location: "Mumbai",
     period: "Jun 2022 - Jul 2022",
     desc: "Conducted fundamental valuations of 20 listed healthcare companies. Identified KIMS and Rainbow Hospitals which delivered 42% returns within 12 months.",
-    certUrl: "/docs/cert-abc.pdf"
+    certUrl: "/docs/cert-abc.pdf",
+    tags: ["Fundamental Analysis", "DCF Valuation", "Healthcare Sector", "42% Return Pick"]
   },
 ];
+
+function Tag({ label }: { label: string }) {
+  return (
+    <span style={{
+      display: "inline-block", padding: "0.2rem 0.55rem", background: "rgba(255,153,51,0.1)",
+      border: "1px solid rgba(255,153,51,0.25)", borderRadius: 4, color: "#FF9933",
+      fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.3px"
+    }}>{label}</span>
+  );
+}
 
 function Work() {
   return (
     <Section id="work" title="Experience">
       {jobs.map((job, i) => (
-        <div key={i} style={{ marginBottom: "2.5rem", paddingBottom: "2rem", borderBottom: i < jobs.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
-          <div style={{ fontWeight: 700, color: "#e2e8f0", marginBottom: "0.3rem", fontSize: "1.05rem" }}>{job.title}</div>
-          <div style={{ color: "#94a3b8", fontSize: "0.95rem", marginBottom: "0.2rem" }}>
-            <a href={job.companyUrl} target="_blank" rel="noreferrer"
-              style={{ color: job.companyColor, fontWeight: 600, textDecoration: "none" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.8"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
-            >{job.company} ↗</a>, {job.location}
+        <FadeIn key={i} delay={i * 0.08}>
+          <div style={{ marginBottom: "2.5rem", paddingBottom: "2rem", borderBottom: i < jobs.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+            <div style={{ fontWeight: 700, color: "#e2e8f0", marginBottom: "0.3rem", fontSize: "1.05rem" }}>{job.title}</div>
+            <div style={{ color: "#94a3b8", fontSize: "0.95rem", marginBottom: "0.2rem" }}>
+              <a href={job.companyUrl} target="_blank" rel="noreferrer"
+                style={{ color: job.companyColor, fontWeight: 600, textDecoration: "none" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.8"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+              >{job.company} ↗</a>, {job.location}
+            </div>
+            <div style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "0.8rem" }}>{job.period}</div>
+            <div style={{ color: "#cbd5e1", lineHeight: 1.7, marginBottom: "0.8rem" }}>{job.desc}</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "0.8rem" }}>
+              {job.tags.map(tag => <Tag key={tag} label={tag} />)}
+            </div>
+            {job.certUrl && (
+              <a href={job.certUrl} target="_blank" rel="noreferrer" style={{
+                display: "inline-flex", alignItems: "center", gap: "0.4rem",
+                padding: "0.35rem 0.75rem", background: "rgba(255,255,255,0.05)",
+                borderRadius: 4, color: "#94a3b8", textDecoration: "none", fontSize: "0.82rem",
+                border: "1px solid rgba(255,255,255,0.08)", transition: "all 0.2s"
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; }}
+              >↗ View Certificate</a>
+            )}
           </div>
-          <div style={{ fontSize: "0.85rem", color: "#64748b", marginBottom: "0.8rem" }}>{job.period}</div>
-          <div style={{ color: "#cbd5e1", lineHeight: 1.7, marginBottom: "0.8rem" }}>{job.desc}</div>
-          {job.certUrl && (
-            <a href={job.certUrl} target="_blank" rel="noreferrer" style={{
-              display: "inline-flex", alignItems: "center", gap: "0.4rem",
-              padding: "0.35rem 0.75rem", background: "rgba(255,255,255,0.05)",
-              borderRadius: 4, color: "#94a3b8", textDecoration: "none", fontSize: "0.82rem",
-              border: "1px solid rgba(255,255,255,0.08)", transition: "all 0.2s"
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; }}
-            >↗ View Certificate</a>
-          )}
-        </div>
+        </FadeIn>
       ))}
     </Section>
   );
@@ -347,58 +434,68 @@ function Work() {
 const projectGroups = [
   {
     label: "Quantitative Research",
+    labelColor: "#F59E0B",
     projects: [
       {
         title: "Generating Buy/Sell Trading Signals from Structured Market Data",
         link: "https://github.com/ArjunDeshmukh16/Generating-Buy-Sell-Trading-Signals-from-Structured-Market-Data",
-        meta: "Directed Research | USC | Aug 2025 - Jan 2026",
+        meta: "Directed Research · USC · Aug 2025 – Jan 2026",
         desc: "Designed end-to-end signal engine integrating live price/volume feeds, news headlines, social sentiment data, and SEC filings into real-time composite scoring framework. Python-based implementation with production-ready data pipeline.",
-        github: "https://github.com/ArjunDeshmukh16/Generating-Buy-Sell-Trading-Signals-from-Structured-Market-Data"
+        github: "https://github.com/ArjunDeshmukh16/Generating-Buy-Sell-Trading-Signals-from-Structured-Market-Data",
+        tags: ["Python", "NLP", "Sentiment Analysis", "SEC Filings", "Signal Generation", "Real-Time Pipeline"]
       },
       {
         title: "CVaR-Based Left-Tail Factor Strategy",
         link: "https://github.com/ArjunDeshmukh16/CVaR-Based-Left-Tail-Factor-Strategy",
-        meta: "Quantitative Research | USC | Aug 2025 - Nov 2025",
+        meta: "Quantitative Research · USC · Aug 2025 – Nov 2025",
         desc: "Built long-short equity strategy using 252-day rolling CVaR(5%) with Fama-MacBeth regressions, beta neutralization, and regime analysis. Results: 2.3% annual alpha, 0.84 Sharpe ratio, -18.2% max drawdown over 15-year backtest.",
-        github: "https://github.com/ArjunDeshmukh16/CVaR-Based-Left-Tail-Factor-Strategy"
+        github: "https://github.com/ArjunDeshmukh16/CVaR-Based-Left-Tail-Factor-Strategy",
+        tags: ["Python", "CVaR", "Fama-MacBeth", "Long-Short Equity", "Factor Strategy", "Backtesting"],
+        highlight: "2.3% α · 0.84 Sharpe · −18.2% MDD"
       },
     ]
   },
   {
     label: "AI & Systems",
+    labelColor: "#3B82F6",
     projects: [
       {
         title: "SARA: Autonomous General-Purpose Model",
         link: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers/blob/main/SARA%20AI",
-        meta: "AI & Deep Learning | NMIMS | Jul 2023 - May 2024",
+        meta: "AI & Deep Learning · NMIMS · Jul 2023 – May 2024",
         desc: "LLM-powered autonomous system executing MS Office and Email functions as personal AI assistant. Recommended by mentor for publication at ICICV-2024 (Springer LNNS).",
-        github: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers/blob/main/SARA%20AI"
+        github: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers/blob/main/SARA%20AI",
+        tags: ["Python", "LLMs", "Automation", "NLP", "Springer LNNS"]
       },
       {
-        title: "B-zier Flow: Curve Visualization & Optimization",
+        title: "Bézier Flow: Curve Visualization & Optimization",
         link: "https://github.com/ArjunDeshmukh16/B-zier-flow",
-        meta: "Computer Graphics | Jun 2022 - Aug 2022",
+        meta: "Computer Graphics · Jun 2022 – Aug 2022",
         desc: "Designed rapid visualization system for Quadratic and Cubic Bézier curves for vehicle and airplane trajectories. Optimal motion planning algorithm presented at AINA-2024, Kitakyushu, Japan.",
-        github: "https://github.com/ArjunDeshmukh16/B-zier-flow"
+        github: "https://github.com/ArjunDeshmukh16/B-zier-flow",
+        tags: ["Python", "Computer Graphics", "Optimization", "AINA-2024 Japan"]
       },
       {
         title: "MeaLit: Food Recommendation Engine",
         link: "https://github.com/ArjunDeshmukh16/MeaLit",
-        meta: "Machine Learning | Data Science",
+        meta: "Machine Learning · Data Science",
         desc: "Personalised food recommendation system using collaborative filtering and content-based techniques to match user preferences with curated meal suggestions.",
-        github: "https://github.com/ArjunDeshmukh16/MeaLit"
+        github: "https://github.com/ArjunDeshmukh16/MeaLit",
+        tags: ["Python", "Collaborative Filtering", "Content-Based ML", "Recommendation Systems"]
       },
     ]
   },
   {
     label: "Research Papers",
+    labelColor: "#10B981",
     projects: [
       {
         title: "Generative Adversarial Networks: Theory & Applications",
         link: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers/blob/main/Generative%20Adversarial%20Networks",
-        meta: "Research Paper | AI | Jan 2023 - Mar 2023",
+        meta: "Research Paper · AI · Jan 2023 – Mar 2023",
         desc: "Research on GANs investigating generator/discriminator architecture and parallel intelligence. Grade: A",
-        github: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers/blob/main/Generative%20Adversarial%20Networks"
+        github: "https://github.com/ArjunDeshmukh16/Articles-Blogs-and-Research-Papers/blob/main/Generative%20Adversarial%20Networks",
+        tags: ["GANs", "Deep Learning", "Neural Networks", "Research"]
       },
     ]
   },
@@ -408,22 +505,56 @@ function Projects() {
   return (
     <Section id="projects" title="Research & Projects">
       {projectGroups.map((group, gi) => (
-        <div key={gi} style={{ marginTop: gi > 0 ? "0.5rem" : 0 }}>
+        <div key={gi} style={{ marginTop: gi > 0 ? "3rem" : 0 }}>
+          <FadeIn delay={0.05}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: "0.5rem",
+              marginBottom: "1.5rem", padding: "0.3rem 0.8rem",
+              background: "rgba(255,255,255,0.04)", border: `1px solid ${group.labelColor}40`,
+              borderRadius: 20
+            }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: group.labelColor, display: "inline-block" }} />
+              <span style={{ color: group.labelColor, fontWeight: 700, fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.8px" }}>{group.label}</span>
+            </div>
+          </FadeIn>
           {group.projects.map((p, i) => (
-            <div key={i} style={{ marginBottom: "2.5rem", paddingBottom: "2rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <div style={{ fontWeight: 700, color: "#e2e8f0", marginBottom: "0.3rem", fontSize: "1.05rem" }}>
-                {p.link ? (
-                  <a href={p.link} target="_blank" rel="noreferrer"
-                    style={{ color: "#e2e8f0", textDecoration: "none" }}
-                    onMouseEnter={e => (e.currentTarget.style.color = "#94a3b8")}
-                    onMouseLeave={e => (e.currentTarget.style.color = "#e2e8f0")}
-                  >{p.title}</a>
-                ) : p.title}
-              </div>
-              <div style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "0.8rem" }}>{p.meta}</div>
-              <div style={{ color: "#cbd5e1", lineHeight: 1.7, marginBottom: "0.8rem" }}>{p.desc}</div>
-              {p.github && (
-                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <FadeIn key={i} delay={0.05 + i * 0.08}>
+              <div style={{
+                marginBottom: "2rem", padding: "1.5rem",
+                background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: 10, transition: "all 0.25s"
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(255,255,255,0.04)"; (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.1)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(255,255,255,0.02)"; (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(255,255,255,0.06)"; }}
+              >
+                <div style={{ fontWeight: 700, color: "#e2e8f0", marginBottom: "0.3rem", fontSize: "1.05rem" }}>
+                  {p.link ? (
+                    <a href={p.link} target="_blank" rel="noreferrer"
+                      style={{ color: "#e2e8f0", textDecoration: "none" }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#94a3b8")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "#e2e8f0")}
+                    >{p.title}</a>
+                  ) : p.title}
+                </div>
+                <div style={{ color: "#64748b", fontSize: "0.88rem", marginBottom: "0.8rem" }}>{p.meta}</div>
+                {p.highlight && (
+                  <div style={{
+                    display: "inline-block", padding: "0.25rem 0.7rem", marginBottom: "0.8rem",
+                    background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)",
+                    borderRadius: 4, color: "#10B981", fontSize: "0.82rem", fontWeight: 700, fontFamily: "Monaco, monospace"
+                  }}>{p.highlight}</div>
+                )}
+                <div style={{ color: "#cbd5e1", lineHeight: 1.7, marginBottom: "1rem" }}>{p.desc}</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "0.8rem" }}>
+                  {p.tags.map(tag => (
+                    <span key={tag} style={{
+                      display: "inline-block", padding: "0.18rem 0.5rem",
+                      background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: 4, color: "#94a3b8", fontSize: "0.72rem", fontWeight: 500
+                    }}>{tag}</span>
+                  ))}
+                </div>
+                {p.github && (
                   <a href={p.github} target="_blank" rel="noreferrer" style={{
                     display: "inline-flex", alignItems: "center", gap: "0.4rem",
                     padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.06)",
@@ -433,9 +564,9 @@ function Projects() {
                     onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; }}
                   >↗ GitHub Repo</a>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            </FadeIn>
           ))}
         </div>
       ))}
@@ -456,12 +587,89 @@ function Skills() {
   return (
     <Section id="skills" title="Skills & Certifications">
       {skillGroups.map((s, i) => (
-        <div key={i} style={{ marginBottom: "2rem" }}>
-          <div style={{ fontWeight: 700, color: "#FF9933", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.5px" }}>{s.label}</div>
-          <div style={{ color: "#cbd5e1" }}>{s.text}</div>
-        </div>
+        <FadeIn key={i} delay={i * 0.06}>
+          <div style={{ marginBottom: "2rem" }}>
+            <div style={{ fontWeight: 700, color: "#FF9933", marginBottom: "0.5rem", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.5px" }}>{s.label}</div>
+            <div style={{ color: "#cbd5e1" }}>{s.text}</div>
+          </div>
+        </FadeIn>
       ))}
     </Section>
+  );
+}
+
+function GitHubStats() {
+  return (
+    <div id="github" style={{ padding: "0 2rem 80px", maxWidth: 900, margin: "0 auto" }}>
+      <FadeIn>
+        <h2 style={{
+          fontSize: "3rem", fontWeight: 800, marginBottom: "0.5rem", letterSpacing: "-1px",
+          background: "linear-gradient(90deg, #FF9933 0%, #FFFFFF 50%, #138808 100%)",
+          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text"
+        }}>GitHub Activity</h2>
+        <div style={{ width: 48, height: 3, background: "linear-gradient(90deg, #FF9933, #138808)", borderRadius: 2, marginBottom: "2.5rem" }} />
+      </FadeIn>
+
+      <FadeIn delay={0.05}>
+        <div style={{ marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem" }}>
+          <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Live stats from GitHub API</span>
+          <a href="https://github.com/ArjunDeshmukh16" target="_blank" rel="noreferrer" style={{
+            display: "inline-flex", alignItems: "center", gap: "0.4rem",
+            padding: "0.4rem 0.9rem", background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.12)", borderRadius: 6,
+            color: "#e2e8f0", textDecoration: "none", fontSize: "0.85rem", fontWeight: 600, transition: "all 0.2s"
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.12)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)"; }}
+          >View Profile on GitHub ↗</a>
+        </div>
+      </FadeIn>
+
+      <FadeIn delay={0.1}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem", marginBottom: "1rem" }}>
+          <img
+            src="https://github-readme-stats.vercel.app/api?username=ArjunDeshmukh16&show_icons=true&theme=github_dark&hide_border=true&bg_color=0d0d0d&title_color=FF9933&icon_color=138808&text_color=e2e8f0&rank_icon=github"
+            alt="GitHub Stats"
+            style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.06)" }}
+          />
+          <img
+            src="https://github-readme-stats.vercel.app/api/top-langs/?username=ArjunDeshmukh16&layout=compact&theme=github_dark&hide_border=true&bg_color=0d0d0d&title_color=FF9933&text_color=e2e8f0&langs_count=8"
+            alt="Top Languages"
+            style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.06)" }}
+          />
+        </div>
+      </FadeIn>
+
+      <FadeIn delay={0.15}>
+        <img
+          src="https://streak-stats.demolab.com?user=ArjunDeshmukh16&theme=github-dark-blue&hide_border=true&background=0d0d0d&ring=FF9933&fire=FF9933&currStreakLabel=FF9933&dates=94a3b8"
+          alt="GitHub Streak"
+          style={{ width: "100%", borderRadius: 8, border: "1px solid rgba(255,255,255,0.06)", marginBottom: "1rem" }}
+        />
+      </FadeIn>
+
+      <FadeIn delay={0.2}>
+        <div style={{
+          padding: "1.25rem 1.5rem", background: "rgba(255,153,51,0.05)",
+          border: "1px solid rgba(255,153,51,0.15)", borderRadius: 8,
+          display: "flex", alignItems: "flex-start", gap: "1rem"
+        }}>
+          <span style={{ fontSize: "1.3rem", flexShrink: 0 }}>📌</span>
+          <div>
+            <div style={{ color: "#FF9933", fontWeight: 700, fontSize: "0.85rem", marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.4px" }}>Pinned Repositories</div>
+            <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.6 }}>
+              Visit my{" "}
+              <a href="https://github.com/ArjunDeshmukh16" target="_blank" rel="noreferrer"
+                style={{ color: "#FF9933", textDecoration: "none" }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = "0.8")}
+                onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+              >GitHub profile ↗</a>{" "}
+              to see featured pinned repositories including the CVaR Factor Strategy, Signal Generation Engine, SARA AI, and more — all with detailed READMEs.
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+    </div>
   );
 }
 
@@ -491,70 +699,76 @@ function Contact() {
 
   return (
     <Section id="contact" title="Let's Connect">
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "3rem", flexWrap: "wrap" }}>
-        <a href="https://docs.google.com/document/d/1T0BxkCFIXMT6j-x_vLjNW_4ADol_9hCf6WjeWpuij1s/export?format=pdf"
-          download="Arjun_Deshmukh_CV.pdf"
-          style={{ ...btnBase, background: "#ffffff", color: "#000000" }}
-          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#ffffff"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
-        >Download CV</a>
-        <a href="https://linkedin.com/in/arjun-deshmukh1609" target="_blank" rel="noreferrer"
-          style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
-          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.color = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#334155"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
-        >LinkedIn</a>
-      </div>
+      <FadeIn delay={0.05}>
+        <div style={{ display: "flex", gap: "1rem", marginBottom: "3rem", flexWrap: "wrap" }}>
+          <a href="https://docs.google.com/document/d/1T0BxkCFIXMT6j-x_vLjNW_4ADol_9hCf6WjeWpuij1s/export?format=pdf"
+            download="Arjun_Deshmukh_CV.pdf"
+            style={{ ...btnBase, background: "#ffffff", color: "#000000" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#ffffff"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
+          >Download CV</a>
+          <a href="https://linkedin.com/in/arjun-deshmukh1609" target="_blank" rel="noreferrer"
+            style={{ ...btnBase, background: "transparent", color: "#94a3b8", border: "2px solid #334155" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.color = "#0A66C2"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#334155"; (e.currentTarget as HTMLAnchorElement).style.color = "#94a3b8"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
+          >LinkedIn</a>
+        </div>
+      </FadeIn>
 
-      <div style={{ maxWidth: 560 }}>
-        <h3 style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: "0.4rem", color: "#e2e8f0" }}>Send me an email</h3>
-        {[
-          { label: "Name", value: name, setter: setName, type: "text", placeholder: "Shah Rukh Khan" },
-          { label: "Email", value: email, setter: setEmail, type: "email", placeholder: "iamsrk@globalstar.com" },
-        ].map(({ label, value, setter, type, placeholder }) => (
-          <div key={label} style={{ marginBottom: "1.2rem" }}>
-            <label style={{ display: "block", fontWeight: 600, color: "#64748b", marginBottom: "0.4rem", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.8px" }}>{label}</label>
-            <input type={type} value={value} onChange={e => setter(e.target.value)} placeholder={placeholder}
-              style={inputStyle}
+      <FadeIn delay={0.1}>
+        <div style={{ maxWidth: 560 }}>
+          <h3 style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: "0.4rem", color: "#e2e8f0" }}>Send me an email</h3>
+          {[
+            { label: "Name", value: name, setter: setName, type: "text", placeholder: "Shah Rukh Khan" },
+            { label: "Email", value: email, setter: setEmail, type: "email", placeholder: "iamsrk@globalstar.com" },
+          ].map(({ label, value, setter, type, placeholder }) => (
+            <div key={label} style={{ marginBottom: "1.2rem" }}>
+              <label style={{ display: "block", fontWeight: 600, color: "#64748b", marginBottom: "0.4rem", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.8px" }}>{label}</label>
+              <input type={type} value={value} onChange={e => setter(e.target.value)} placeholder={placeholder}
+                style={inputStyle}
+                onFocus={e => (e.currentTarget.style.borderColor = "#FF9933")}
+                onBlur={e => (e.currentTarget.style.borderColor = "#334155")}
+              />
+            </div>
+          ))}
+          <div style={{ marginBottom: "1.5rem" }}>
+            <label style={{ display: "block", fontWeight: 600, color: "#64748b", marginBottom: "0.4rem", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.8px" }}>Message</label>
+            <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="What's on your mind?"
+              style={{ ...inputStyle, resize: "vertical", minHeight: 130 }}
               onFocus={e => (e.currentTarget.style.borderColor = "#FF9933")}
               onBlur={e => (e.currentTarget.style.borderColor = "#334155")}
             />
           </div>
-        ))}
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label style={{ display: "block", fontWeight: 600, color: "#64748b", marginBottom: "0.4rem", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.8px" }}>Message</label>
-          <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="What's on your mind?"
-            style={{ ...inputStyle, resize: "vertical", minHeight: 130 }}
-            onFocus={e => (e.currentTarget.style.borderColor = "#FF9933")}
-            onBlur={e => (e.currentTarget.style.borderColor = "#334155")}
-          />
+          <button onClick={sendEmail} style={{
+            width: "100%", padding: "0.85rem", background: "#ffffff", color: "#000000",
+            border: "none", borderRadius: 6, fontWeight: 700, cursor: "pointer",
+            fontSize: "0.95rem", transition: "all 0.2s", letterSpacing: "0.3px"
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#ffffff"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}
+          >Send Message →</button>
         </div>
-        <button onClick={sendEmail} style={{
-          width: "100%", padding: "0.85rem", background: "#ffffff", color: "#000000",
-          border: "none", borderRadius: 6, fontWeight: 700, cursor: "pointer",
-          fontSize: "0.95rem", transition: "all 0.2s", letterSpacing: "0.3px"
-        }}
-          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#ffffff"; (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}
-        >Send Message →</button>
-      </div>
+      </FadeIn>
 
-      <p style={{ marginTop: "3rem", color: "#64748b", fontSize: "0.95rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-        {[
-          { label: "Gmail", href: "mailto:arjun.deshmukh1609@gmail.com" },
-          { label: "LinkedIn", href: "https://linkedin.com/in/arjun-deshmukh1609" },
-          { label: "GitHub", href: "https://github.com/ArjunDeshmukh16" },
-          { label: "Instagram", href: "https://instagram.com/160991_arjun" },
-        ].map((l, i, arr) => (
-          <span key={l.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <a href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer"
-              style={linkStyle}
-              onMouseEnter={e => (e.currentTarget.style.color = "#e2e8f0")}
-              onMouseLeave={e => (e.currentTarget.style.color = "#94a3b8")}
-            >{l.label}</a>
-            {i < arr.length - 1 && <span style={{ color: "#334155" }}>|</span>}
-          </span>
-        ))}
-      </p>
+      <FadeIn delay={0.15}>
+        <p style={{ marginTop: "3rem", color: "#64748b", fontSize: "0.95rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+          {[
+            { label: "Gmail", href: "mailto:arjun.deshmukh1609@gmail.com" },
+            { label: "LinkedIn", href: "https://linkedin.com/in/arjun-deshmukh1609" },
+            { label: "GitHub", href: "https://github.com/ArjunDeshmukh16" },
+            { label: "Instagram", href: "https://instagram.com/160991_arjun" },
+          ].map((l, i, arr) => (
+            <span key={l.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <a href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel="noreferrer"
+                style={linkStyle}
+                onMouseEnter={e => (e.currentTarget.style.color = "#e2e8f0")}
+                onMouseLeave={e => (e.currentTarget.style.color = "#94a3b8")}
+              >{l.label}</a>
+              {i < arr.length - 1 && <span style={{ color: "#334155" }}>|</span>}
+            </span>
+          ))}
+        </p>
+      </FadeIn>
     </Section>
   );
 }
@@ -675,6 +889,7 @@ export default function App() {
       <Recommendations />
       <Projects />
       <Skills />
+      <GitHubStats />
       <Contact />
       <Credits />
       <Footer />
