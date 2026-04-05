@@ -794,8 +794,8 @@ function Contact() {
           ) : (
             <>
               {[
-                { label: "Name", value: name, setter: setName, type: "text", placeholder: "Shah Rukh Khan" },
-                { label: "Email", value: email, setter: setEmail, type: "email", placeholder: "iamsrk@globalstar.com" },
+                { label: "Name", value: name, setter: setName, type: "text", placeholder: "Jane Smith" },
+                { label: "Email", value: email, setter: setEmail, type: "email", placeholder: "jane.smith@gmail.com" },
               ].map(({ label, value, setter, type, placeholder }) => (
                 <div key={label} style={{ marginBottom: "1.2rem" }}>
                   <label style={{ display: "block", fontWeight: 600, color: "#64748b", marginBottom: "0.4rem", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.8px" }}>{label}</label>
